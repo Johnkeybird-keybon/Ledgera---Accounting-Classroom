@@ -1,0 +1,25 @@
+{
+    "flutter": {
+      "platforms": {
+        "android": {
+          "default": {
+            "projectId": "ledgera---accounting-cla-ecd3c",
+            "appId": "1:479978088143:android:5765c80014e5cd0a8739ba",
+            "fileOutput": "android/app/google-services.json"
+          }
+        },
+        "dart": {
+          "lib/firebase_options.dart": {
+            "projectId": "ledgera---accounting-cla-ecd3c",
+            "configurations": {
+              "android": "1:479978088143:android:5765c80014e5cd0a8739ba",
+              "ios": "1:479978088143:ios:07793d5e4f85f1e28739ba",
+              "macos": "1:479978088143:ios:07793d5e4f85f1e28739ba",
+              "web": "1:479978088143:web:500e4521468474b58739ba",
+              "windows": "1:479978088143:web:d81e657544a4bae98739ba"
+            }
+          }
+        }
+      }
+    }
+  }  
