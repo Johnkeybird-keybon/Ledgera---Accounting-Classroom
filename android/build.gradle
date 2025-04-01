@@ -1,3 +1,18 @@
+// File: android/build.gradle
+
+buildscript {
+    repositories {
+        google()
+        mavenCentral()
+    }
+    dependencies {
+        // Updated Gradle version to match your Gradle 8.4 setup
+        classpath "com.android.tools.build:gradle:8.4.0"
+        // Google services plugin for Firebase:
+        classpath "com.google.gms:google-services:4.3.15"
+    }
+}
+
 allprojects {
     repositories {
         google()
@@ -8,9 +23,6 @@ allprojects {
 rootProject.buildDir = "../build"
 subprojects {
     project.buildDir = "${rootProject.buildDir}/${project.name}"
-}
-subprojects {
-    project.evaluationDependsOn(":app")
 }
 
 tasks.register("clean", Delete) {

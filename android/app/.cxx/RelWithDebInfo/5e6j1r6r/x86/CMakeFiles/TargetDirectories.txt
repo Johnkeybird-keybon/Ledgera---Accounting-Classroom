@@ -1,0 +1,2 @@
+C:/Myprojects/ledgeroom/android/app/.cxx/RelWithDebInfo/5e6j1r6r/x86/CMakeFiles/edit_cache.dir
+C:/Myprojects/ledgeroom/android/app/.cxx/RelWithDebInfo/5e6j1r6r/x86/CMakeFiles/rebuild_cache.dir

@@ -1,29 +1,29 @@
 name: ledgeroom
 description: "A new Flutter project."
-publish_to: 'none' # Remove this line if you wish to publish to pub.dev
+publish_to: "none" # Remove this line if publishing to pub.dev
 
 version: 1.0.0+1
 
 environment:
-  sdk: ^3.5.4
+  sdk: ">=3.5.4 <4.0.0"
 
 dependencies:
   flutter:
     sdk: flutter
 
   cupertino_icons: ^1.0.8
-  firebase_core: ^3.8.0
-  firebase_auth: ^5.3.3
+  firebase_core: ^2.30.0
+  firebase_auth: ^4.17.6
   google_sign_in: ^6.2.2
-  logger: ^2.5.0  # Added logger dependency
+  logger: ^2.5.0  
   url_launcher: ^6.0.0
-  cloud_firestore: ^5.5.0  # Add this line for Firestore
+  cloud_firestore: ^4.17.4
   zoom_widget: ^2.0.1
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
-  flutter_lints: ^5.0.0
+  flutter_lints: ^3.0.1
 
 flutter:
   uses-material-design: true

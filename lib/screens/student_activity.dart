@@ -1,13 +1,16 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import '../services/classroom_service.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 
 class StudentActivity extends StatefulWidget {
   final String classroomId;
   final String activityId;
 
-  const StudentActivity(
-      {required this.classroomId, required this.activityId, super.key});
+  const StudentActivity({
+    required this.classroomId,
+    required this.activityId,
+    super.key,
+  });
 
   @override
   StudentActivityState createState() => StudentActivityState();
@@ -18,17 +21,48 @@ class StudentActivityState extends State<StudentActivity> {
   final ClassroomService _classroomService = ClassroomService();
 
   Future<void> _submitAnswer() async {
-    String answer = _answerController.text;
+    String answer = _answerController.text.trim();
     String studentId = FirebaseAuth.instance.currentUser!.uid;
 
-    await _classroomService.submitAnswer(
-        widget.classroomId, widget.activityId, studentId, answer);
+    // Generate a unique submission ID (e.g., timestamp-based)
+    String submissionId = DateTime.now().millisecondsSinceEpoch.toString();
 
-    if (mounted) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Answer Submitted!')),
+    // Convert the student's answer into a Map<String, dynamic> structure
+    // that matches your Firestore "statement" fields. For simplicity, store it under "answer":
+    final Map<String, dynamic> answerStatement = {
+      "answer": answer,
+    };
+
+    // For now, let's set correctCells = 0 (or any logic you prefer)
+    int correctCells = 0;
+
+    try {
+      await _classroomService.submitAnswer(
+        submissionId: submissionId,
+        activityId: widget.activityId,
+        studentId: studentId,
+        answerStatement: answerStatement,
+        correctCells: correctCells,
       );
+
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Answer Submitted!')),
+        );
+      }
+    } catch (e) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Error submitting answer: $e')),
+        );
+      }
     }
+  }
+
+  @override
+  void dispose() {
+    _answerController.dispose();
+    super.dispose();
   }
 
   @override
@@ -47,6 +81,7 @@ class StudentActivityState extends State<StudentActivity> {
                 labelText: 'Your Answer',
               ),
             ),
+            const SizedBox(height: 16),
             ElevatedButton(
               onPressed: _submitAnswer,
               child: const Text('Submit'),

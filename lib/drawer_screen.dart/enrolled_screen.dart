@@ -1,7 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:ledgeroom/screens/classroom_details.dart'; // Updated import path
+import 'package:ledgeroom/screens/classroom_details.dart';
 import '../services/classroom_service.dart';
 
 class EnrolledScreen extends StatefulWidget {
@@ -17,29 +17,49 @@ class EnrolledScreenState extends State<EnrolledScreen> {
 
   Future<void> _joinClassroom() async {
     String code = _codeController.text;
+    if (code.trim().isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Please enter a valid classroom code')),
+      );
+      return;
+    }
     String studentId = FirebaseAuth.instance.currentUser!.uid;
 
-    var classroomSnapshot =
-        await classroomService.getClassroomByCode(code).first;
-    if (classroomSnapshot.exists) {
-      String classroomId = classroomSnapshot.id;
-      await classroomService.addStudentToClassroom(classroomId, studentId);
+    try {
+      var classroomSnapshot =
+          await classroomService.getClassroomByCode(code).first;
+      if (classroomSnapshot != null && classroomSnapshot.exists) {
+        String classroomId = classroomSnapshot.id;
+        await classroomService.addStudentToClassroom(classroomId, studentId);
 
-      if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Joined Classroom Successfully!')),
-        );
-        setState(() {
-          _codeController.clear();
-        });
+        if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text('Joined Classroom Successfully!')),
+          );
+          setState(() {
+            _codeController.clear();
+          });
+        }
+      } else {
+        if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text('Invalid Classroom Code')),
+          );
+        }
       }
-    } else {
+    } catch (e) {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Invalid Classroom Code')),
+          SnackBar(content: Text('Error joining classroom: $e')),
         );
       }
     }
+  }
+
+  @override
+  void dispose() {
+    _codeController.dispose();
+    super.dispose();
   }
 
   @override

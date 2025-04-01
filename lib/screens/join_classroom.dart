@@ -20,7 +20,7 @@ class JoinClassroomState extends State<JoinClassroom> {
     _classroomService
         .getClassroomByCode(code)
         .listen((classroomSnapshot) async {
-      if (classroomSnapshot.exists) {
+      if (classroomSnapshot!.exists) {
         String classroomId = classroomSnapshot.id;
         await _classroomService.addStudentToClassroom(classroomId, studentId);
 
